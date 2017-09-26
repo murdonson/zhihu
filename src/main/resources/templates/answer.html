@@ -1,0 +1,18 @@
+#parse("header.html")
+<h1 style="color:blue;text-align: center">个人回答</h1>
+<hr>
+<div>
+    <ul style="list-style: none">
+        #foreach($map in $maps)
+        <li>
+            <img src="$!{map.user.headUrl}" style="width: 30px;height: 30px;">&nbsp;$!{map.user.name}<br>
+            <div style="background-color: #F7F8FA;width: 700px;">
+                         <h3 style="text-align: center;color:blue">标题:$!{map.question.title}</h3><br>
+                        <h5 style="text-align: center">内容:$!{map.comment.content}</h5>
+            </div>
+        </li>
+        <hr>
+        #end
+    </ul>
+
+</div>

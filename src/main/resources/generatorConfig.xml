@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <!-- !!!! Driver Class Path !!!! -->
+    <classPathEntry location="D:\\GitHubproject\\zhihu\\src\\main\\resources\\mysql-connector-java-5.1.6-bin.jar"/>
+
+    <context id="context" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!-- !!!! Database Configurations !!!! -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/wenda?characterEncoding=utf8"
+                        userId="root"
+                        password="mmalan"/>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- !!!! Model Configurations !!!! -->
+        <javaModelGenerator targetPackage="com.xiangyang.zhihu.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- !!!! Mapper XML Configurations !!!! -->
+        <sqlMapGenerator targetPackage="mapper1" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- !!!! Mapper Interface Configurations !!!! -->
+        <javaClientGenerator targetPackage="com.xiangyang.zhihu.dao" targetProject="src/main/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- !!!! Table Configurations !!!! -->
+        <table tableName="user" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+        <table tableName="question" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+        <table tableName="message" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+        <table tableName="comment" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+        <table tableName="login_ticket" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiangyang.zhihu.dao.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.xiangyang.zhihu.model.Comment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="entity_id" jdbcType="INTEGER" property="entityId" />
+    <result column="entity_type" jdbcType="INTEGER" property="entityType" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xiangyang.zhihu.model.Comment">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, entity_id, entity_type, created_date, status
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xiangyang.zhihu.model.Comment">
+    insert into comment (id, user_id, entity_id, 
+      entity_type, created_date, status, 
+      content)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{entityId,jdbcType=INTEGER}, 
+      #{entityType,jdbcType=INTEGER}, #{createdDate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xiangyang.zhihu.model.Comment">
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="entityId != null">
+        entity_id,
+      </if>
+      <if test="entityType != null">
+        entity_type,
+      </if>
+      <if test="createdDate != null">
+        created_date,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="entityId != null">
+        #{entityId,jdbcType=INTEGER},
+      </if>
+      <if test="entityType != null">
+        #{entityType,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xiangyang.zhihu.model.Comment">
+    update comment
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="entityId != null">
+        entity_id = #{entityId,jdbcType=INTEGER},
+      </if>
+      <if test="entityType != null">
+        entity_type = #{entityType,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xiangyang.zhihu.model.Comment">
+    update comment
+    set user_id = #{userId,jdbcType=INTEGER},
+      entity_id = #{entityId,jdbcType=INTEGER},
+      entity_type = #{entityType,jdbcType=INTEGER},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xiangyang.zhihu.model.Comment">
+    update comment
+    set user_id = #{userId,jdbcType=INTEGER},
+      entity_id = #{entityId,jdbcType=INTEGER},
+      entity_type = #{entityType,jdbcType=INTEGER},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectCommentsByQuestionId" resultType="com.xiangyang.zhihu.model.Comment" parameterType="int">
+    select * from comment where entity_id=#{qid}
+  </select>
+
+
+  <select id="selectCommentNumByUserId" parameterType="int" resultType="int">
+    select count(1) from comment where user_id=#{useId}
+  </select>
+
+  <select id="selectCommentsByUserId" parameterType="int" resultType="com.xiangyang.zhihu.model.Comment">
+    select * from comment where user_id=#{userId}
+  </select>
+</mapper>

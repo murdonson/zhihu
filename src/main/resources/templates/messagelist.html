@@ -1,0 +1,27 @@
+#parse("header.html")
+<h2 style="text-align: left;color:blue">私信列表</h2>
+<hr>
+<div style="text-align: center">
+<div style="text-align: left">
+    <ul style="list-style: none;">
+        #foreach($map in $maps)
+        <li >
+            <a href="/msg/detail/$!{map.message.conversationId}">对话内容</a>
+            <div  style="width: 900px;" >
+                <img src="$!{map.user.headUrl}" style="width: 30px;height: 30px;" >&nbsp;&nbsp;&nbsp;$!{map.user.name}<br>
+                <div style="margin-top:10px;"> $!{map.message.content}</div>
+                <div style="margin-left:500px;">
+                    <input type="hidden" class="conversationId" value="$!{map.message.conversationId}">
+                    <$date.format('yyyy-MM-dd  HH:mm:ss',$!{map.message.createdDate})><br>
+                    <!--$date.format('yyyy-MM-dd HH:mm:ss', $!{map.question.createdDate})-->
+                    总共$!{map.total}条对话
+                </div>
+            </div>
+            </a>
+        </li>
+        <hr>
+        <br>
+        #end
+    </ul>
+</div>
+</div>

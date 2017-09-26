@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiangyang.zhihu.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.xiangyang.zhihu.model.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, password, salt, head_url, email
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xiangyang.zhihu.model.User">
+    insert into user (id, name, password, 
+      salt, head_url, email
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{headUrl,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xiangyang.zhihu.model.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="headUrl != null">
+        head_url,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="headUrl != null">
+        #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xiangyang.zhihu.model.User">
+    update user
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="headUrl != null">
+        head_url = #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xiangyang.zhihu.model.User">
+    update user
+    set name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      head_url = #{headUrl,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="checkUsername" parameterType="String" resultType="int">
+    select count(1) from user where name=#{username}
+  </select>
+
+
+
+  <insert id="addUser" parameterType="com.xiangyang.zhihu.model.User">
+    insert into user VALUES (null,#{name},#{password},#{salt},#{headUrl},#{email})
+  </insert>
+
+  <select id="selectByname" parameterType="String" resultType="com.xiangyang.zhihu.model.User">
+    select * from user where name=#{username}
+  </select>
+</mapper>

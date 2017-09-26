@@ -1,0 +1,86 @@
+#parse("header.html")
+<script>
+    function addComment()
+    {
+        var comment=$("#comment").val();
+        var qId=$("#qId").val();
+        var form=$("#addCommentForm");
+        if(content=="")
+        {
+            alert("请填写回答");
+            return false;
+
+        }
+        else
+        {
+            var strLen=comment.length;
+            var j=0;
+            for(var i=0;i<strLen;i++)
+            {
+                if(comment.charCodeAt(i)!=9&&comment.charCodeAt(i)!=32)
+                {
+                    ++j;
+                }
+            }
+            if(j<3)
+            {
+                alert("回答字数太少了吧");
+                return false;
+            }
+            else
+            {
+               /* $.ajax({
+                    url:"/comment/add",
+                    type:"post",
+                    data:{"comment":comment,"qId":qId},
+                    dataType:"json"
+                });*/
+                return true;
+
+            }
+        }
+    }
+</script>
+
+<head>
+    <title>detail</title>
+</head>
+<div style="background-color: white;width:100%;height: 130px;border:1px solid white" >
+<div style="padding-left:40px;">
+    <div style="font-size:35px;font-family: 'Microsoft New Tai Lue' ;margin-top:20px;color:blue">标题: $!{question.title}</div>
+    <div style="font-size:10px;margin-top:10px;">内容: $!{question.content}</div>
+</div>
+</div>
+
+
+<div style="background-color:#F7F8FA">
+
+<div style="margin-top:30px;">
+    <h1 style="color:darkred">回答区</h1>
+    <br><br><br>
+    <ul style="list-style: none">
+        <hr>
+        #foreach($map in $maps)
+        <li>
+            <img src="$!{map.user.headUrl}" width="20px;" height="20px;" >&nbsp;&nbsp;&nbsp;
+            <a href="/user/$!{map.user.id}">$!{map.user.name}</a>
+            <div style="margin-top:10px;font-family: SimSun-ExtB;margin-left:30px;">
+                $!{map.comment.content}
+            </div>
+            <div style="padding-left:800px;">$date.format('yyyy-MM-dd HH:mm:ss', $!{map.comment.createdDate})</div>
+        </li>
+        <hr>
+        #end
+    </ul>
+</div>
+
+<div >
+    <form id="addCommentForm" action="/comment/add" onsubmit="return addComment()">
+    <input type="hidden" name="qId" id="qId" value="$!{question.id}">
+    <textarea name="comment" id="comment" cols="170" rows="10"></textarea><br>
+    <div style="padding-left:900px;"><button type="submit" class="btn btn-primary" >发布回答</button></div>
+    </form>
+</div>
+</div>
+
+

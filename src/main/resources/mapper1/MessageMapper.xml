@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiangyang.zhihu.dao.MessageMapper">
+  <resultMap id="BaseResultMap" type="com.xiangyang.zhihu.model.Message">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="from_id" jdbcType="INTEGER" property="fromId" />
+    <result column="to_id" jdbcType="INTEGER" property="toId" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="has_read" jdbcType="INTEGER" property="hasRead" />
+    <result column="conversation_id" jdbcType="VARCHAR" property="conversationId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xiangyang.zhihu.model.Message">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, from_id, to_id, created_date, has_read, conversation_id
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xiangyang.zhihu.model.Message">
+    insert into message (id, from_id, to_id, 
+      created_date, has_read, conversation_id, 
+      content)
+    values (#{id,jdbcType=INTEGER}, #{fromId,jdbcType=INTEGER}, #{toId,jdbcType=INTEGER}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{hasRead,jdbcType=INTEGER}, #{conversationId,jdbcType=VARCHAR}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xiangyang.zhihu.model.Message">
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fromId != null">
+        from_id,
+      </if>
+      <if test="toId != null">
+        to_id,
+      </if>
+      <if test="createdDate != null">
+        created_date,
+      </if>
+      <if test="hasRead != null">
+        has_read,
+      </if>
+      <if test="conversationId != null">
+        conversation_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fromId != null">
+        #{fromId,jdbcType=INTEGER},
+      </if>
+      <if test="toId != null">
+        #{toId,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hasRead != null">
+        #{hasRead,jdbcType=INTEGER},
+      </if>
+      <if test="conversationId != null">
+        #{conversationId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xiangyang.zhihu.model.Message">
+    update message
+    <set>
+      <if test="fromId != null">
+        from_id = #{fromId,jdbcType=INTEGER},
+      </if>
+      <if test="toId != null">
+        to_id = #{toId,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hasRead != null">
+        has_read = #{hasRead,jdbcType=INTEGER},
+      </if>
+      <if test="conversationId != null">
+        conversation_id = #{conversationId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xiangyang.zhihu.model.Message">
+    update message
+    set from_id = #{fromId,jdbcType=INTEGER},
+      to_id = #{toId,jdbcType=INTEGER},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      has_read = #{hasRead,jdbcType=INTEGER},
+      conversation_id = #{conversationId,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xiangyang.zhihu.model.Message">
+    update message
+    set from_id = #{fromId,jdbcType=INTEGER},
+      to_id = #{toId,jdbcType=INTEGER},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      has_read = #{hasRead,jdbcType=INTEGER},
+      conversation_id = #{conversationId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getConverstionList" parameterType="int" resultType="com.xiangyang.zhihu.model.Message">
+    select from_id,to_id,content,created_date,has_read,conversation_id,count(id) as id from
+    (select * from message where from_id=#{id} or to_id=#{id}) tt group by conversation_id
+    order by created_date desc
+  </select>
+
+
+  <select id="getMessageListByconversationId" parameterType="String" resultType="com.xiangyang.zhihu.model.Message">
+    select * from message where conversation_id=#{id}
+  </select>
+</mapper>

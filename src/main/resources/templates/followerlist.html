@@ -1,0 +1,11 @@
+#parse("header.html")
+<h1 style="color: blue;text-align: center">粉丝列表</h1>
+<div>
+    <ul style="list-style: none">
+        #foreach($map in $maps)
+        <li style="float: left">
+            <img src="$!{map.user.headUrl}" style="width: 30px;height: 30px;">&nbsp;$!{map.user.name}
+        </li>
+        #end
+    </ul>
+</div>

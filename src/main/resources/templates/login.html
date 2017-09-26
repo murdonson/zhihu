@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>超炫超拽的登录页面</title>
+    <link rel="stylesheet" href="/bootstrap3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap3/css/bootstrap-theme.min.css">
+    <script src="/bootstrap3/js/jquery-1.11.2.min.js"></script>
+    <script src="/bootstrap3/js/bootstrap.min.js"></script>
+</head>
+<body style="text-align: center;background-image:url('/images/img/yuzhou2.jpg');background-repeat: no-repeat;background-size: cover;">
+<div>
+    <img src="/images/img/zhihu.jpg" >
+    #if(!$msg)
+    <h2 style="color:black;">襄阳知乎,与世界分享你的经验</h2>
+    #else
+    <h2 style="color:black;"> $!{msg}</h2>
+
+    #end
+    <form id="reloginform" action="/reg" method="post">
+        <button class="btn btn-primary" type="submit" onclick="form=document.getElementById('reloginform');form.action='/reg'">注册</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-primary" type="submit" onclick="form=document.getElementById('reloginform');form.action='/login'">登录</button><br>
+        <input type="text" name="username" id="username" placeholder="姓名">
+        <input type="text" name="email" id="email" placeholder="邮箱(可选)">
+        <input type="password" name="password" id="password" placeholder="密码(不少于6位)">
+    </form>
+</div>
+
+<div style="position: absolute;bottom: 10px;color:darkgreen">@2017襄阳知乎 作者:张艺豪</div>
+</body>
+</html>

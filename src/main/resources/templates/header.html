@@ -1,0 +1,186 @@
+<link rel="stylesheet" href="/bootstrap3/css/bootstrap.min.css">
+<link rel="stylesheet" href="/bootstrap3/css/bootstrap-theme.min.css">
+<script src="/bootstrap3/js/jquery-1.11.2.min.js"></script>
+<script src="/bootstrap3/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+   function change()
+   {
+       $(this).css("background-color","#F7F8FA ");
+   }
+   function unchange()
+   {
+       $(this).css("background-color","white");
+   }
+   function todetail()
+   {
+       var conversationId=$(".conversationId").val();
+       window.location.href="/msg/detail/"+conversationId;
+   }
+
+
+        function addQuestion()
+        {
+            var title=$("#title").val();
+            var content=$("#content").val();
+            if(title=="")
+            {
+                alert("请填写标题");
+            }
+            else
+            {
+                if(title!=""||title.length>0)//处理多个空空格情况 tab键
+                {
+                    var strLen=title.length;
+                    var j=0;
+                    for(var i=0;i<strLen;i++)
+                    {
+
+                        if(title.charCodeAt(i)!=9&&title.charCodeAt(i)!=32)
+                        {
+                            ++j;
+                        }
+                    }
+                    if(j<3)
+                    {
+                        alert("标题字数太少了吧");
+                    }
+                    else
+                    {
+                        $.ajax({
+                            url:"/question/add",
+                            type:"post",
+                            data:{"title":title,"content":content},
+                            dataType:"json"
+                        }).done(function(result){
+                            if(result.code==0)
+                            {
+                                alert("成功提交您的问题");
+                                window.location.href="/";
+                            }
+                            else
+                            {
+                                if(result.code==1)
+                                {
+                                    alert("请您先登录");
+                                    window.location.href="/relogin";//跳转到登录页面
+                                }
+                                else
+                                {
+                                    alert("请检查您的输入内容是否有误 不要恶意填写多个空格哦");
+                                    window.location.href="/";
+                                }
+
+                            }
+                        })
+                    }
+                }
+            }
+
+
+        }
+        function addMessage() {
+
+            var content = $("#msgcontent").val();
+            var userId=$("#userId").val();
+            if(content=="")
+            {
+                alert("请填写私信内容");
+            }
+            else {
+                $.ajax({
+                    url: "/msg/add",
+                    type: "post",
+                    data: { "content": content,"userId":userId},
+                    dataType: "json"
+                }).done(function (result) {
+                    if (result.code == 0) {
+                        alert("成功提交您的私信");
+                        window.location.reload();
+                    }
+                    else {
+                        if (result.code == 1) {
+                            alert("请您先登录");
+                            window.location.href = "/relogin";//挑战到登录页面
+                        }
+                        else {
+                            alert("请检查您的输入内容是否有误 不要恶意填写多个空格哦");
+                            window.location.href = "/";
+                        }
+                    }
+                });
+            }
+        }
+</script>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header" >
+            <a href="/" class="navbar-text">
+                <img src="/images/img/brand.png"  >
+            </a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="example-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">首页</a></li>
+                <li><a href="/haoge">豪哥有话说</a></li>
+                <li class="navbar-btn" ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" >提问</button>
+                <div class="modal fade" id="myModal" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                               <h4 class="modal-title">襄阳知乎 无所不能</h4>
+                            </div>
+                            <div class="modal-body">
+                               <div>
+                                   <textarea name="title" id="title" cols="60" rows="1" placeholder="写下你的问题"></textarea>
+                               </div>
+                                内容说明(选填)
+                                <div style="margin-top:9px;">
+                                    <textarea name="content" id="content" cols="60" rows="10" placeholder="写下问题具体说明"></textarea>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" onclick="addQuestion()">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </li>
+
+
+
+
+
+
+
+            </ul>
+            <iframe style="margin-left:30px;" width="420" scrolling="no" height="60" frameborder="0"
+                    allowtransparency="true"
+                    src="http://i.tianqi.com/index.php?c=code&id=12&icon=1&num=5"></iframe>
+            <ul class="nav navbar-nav navbar-right">
+                #if($user)
+                <li class="dropdown" >
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+                        $!{user.name}<img style="width:50px;height: 30px;" src="$!{user.headUrl}"><span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ><a href="/user/$!{user.id}"><span class="glyphicon glyphicon-home"></span>我的主页</a></li>
+                        <li ><a href="/msg/list"><span class="glyphicon glyphicon-comment"></span>消息列表</a></li>
+                        <li ><a href="/logout"><span class="glyphicon glyphicon-off"></span>退出</a></li>
+                    </ul>
+                </li>
+                #else
+                <li><a href="/relogin">登录或注册</a></li>
+                #end
+                </ul>
+        </div>
+
+    </div>
+</nav>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+
+<div>
+    最新动态
+    <hr>
+</div>
+<ul style="list-style: none">
+    #foreach($!{map} in $!{maps})
+    <li>
+        <div style="width: 900px;margin-top:30px;">
+            <img width="30px;" height="30px;" src="$!{map.user.headUrl}"/>
+            <a href="/user/$!{map.user.id}">$!{map.user.name} </a>&nbsp;&nbsp; &nbsp;
+            <h style="color:blue;display:inline-block"><a href="/question/$!{map.question.id}">标题:$!{map.question.title}</a></h>&nbsp;&nbsp;&nbsp;&nbsp;
+            #if($!{likecount})
+            $!{likecount}人觉得问题很赞<br>
+            #elseif($!{map.likecount})
+            $!{map.likecount}人觉得问题很赞<br>
+            #else
+            0人觉得很赞<br>
+            #end
+            #if($!{map.status}==1)
+            你觉得很赞<br>
+            #elseif($map.status==-1)
+            你觉得呵呵<br>
+            #end
+            <div style="margin-top:20px;width: 900px;font-family: 'Microsoft Himalaya';font-size:20px;">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内容:$!{map.question.content}
+            </div>
+        </div>
+        <div style="margin-top:10px;">
+            $!{map.question.commentCount}条评论 <br>
+            #if($!{map.status}==1)
+            <a href="/dislike/$!{map.question.id}">怒踩</a> <br>
+            #elseif($!{map.status}==-1)
+            <a href="/like/$!{map.question.id}">点赞</a> <br>
+            #else
+            <a href="/like/$!{map.question.id}">点赞</a> <br>
+            <a href="/dislike/$!{map.question.id}">怒踩</a> <br>
+            #end
+
+
+            <div style="position: absolute;right:500px;"><$date.format('yyyy-MM-dd HH:mm:ss', $!{map.question.createdDate})></div>
+        </div>
+    </li>
+    #end
+</ul>
+
+
+<div style="text-align: center;">
+    <nav>
+        <ul class="pagination">
+            $!{pageCode}
+        </ul>
+    </nav>
+</div>
+</body>
+</html>
+
+
+
+

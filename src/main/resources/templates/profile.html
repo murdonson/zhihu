@@ -1,0 +1,84 @@
+#parse("header.html")
+
+<div style="text-align: center;border:1px solid #F7F8FA;">
+    <img src="$!{user1.headUrl}" width="30px;" height="30px;"  >
+    #if($user.id!=$user1.id)
+    $!{user1.name}<br> <a href="/followerlist/$!{user1.id}">$!{followerCount}粉丝</a>/<a href="/followeelist/$!{user1.id}">$!{followeeCount}关注</a>/<a href="/answer/$!{user1.id}">$!{commentCount}评论</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    #else
+    $!{user1.name}<br><a href="/followerlist/$!{user1.id}">$!{followerCount1}粉丝</a>/<a href="/followeelist/$!{user1.id}">$!{followeeCount1}关注</a>/<a href="/answer/$!{user1.id}">$!{commentCount}评论</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    #end
+    <!--左边user对应hostholder  右边user对应正在浏览个人主页对应的user-->
+    #if($user.id!=$user1.id)
+    <form id="guanzhu"  method="post">
+        <input type="hidden" name="userId" value="$!{user1.id}">
+    #if(!$followed)
+        <button type="submit" class="btn btn-primary" onclick="form=document.getElementById('guanzhu');form.action='/followuser'">关注</button>
+    #else
+        <button type="submit" class="btn btn-primary" onclick="form=document.getElementById('guanzhu');form.action='/un'">取消关注</button>
+    #end
+    </form>
+
+    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal1" >私信</button>
+    <div class="modal fade" id="myModal1" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">我要告白!</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                       私信给$!{user1.name}
+                    </div>
+                    爱他就带他一年逛两次海澜之家
+                    <hr>
+                    <div style="margin-top:9px;">
+                        <input type="hidden" id="userId" value="$!{user1.id}">
+                        <textarea name="msgcontent" id="msgcontent" cols="60" rows="10" placeholder="私信内容"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="addMessage()">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+#else
+#end
+<div style="width: 700px;">
+    <span class="glyphicon glyphicon-bell"></span>最新动态
+    <hr>
+</div>
+
+<div style="width: 700px;text-align: left">
+    提出的问题<br>
+    <hr>
+    <ul style="list-style: none">
+        #foreach($map in $maps)
+        <li>
+            <div style="width: 900px;margin-top:30px;">
+                <img width="30px;" height="30px;" src="$!{map.user.headUrl}"/> <a href="/user/$!{map.user.id}">$!{map.user.name} </a>&nbsp;&nbsp; &nbsp;
+                <h style="color:blue;display:inline-block"><a href="/question/$!{map.question.id}">$!{map.question.title}</a></h>
+                <div style="margin-top:20px;width: 900px;font-family: 'Microsoft Himalaya';font-size:20px;">
+                    $!{map.question.content}
+                </div>
+            </div>
+            <div style="margin-top:10px;">
+                   $!{map.question.commentCount}条评论
+                <div style="position: absolute;right:600px;"><$date.format('yyyy-MM-dd HH:mm:ss', $!{map.question.createdDate})></div>
+            </div>
+        </li>
+        <hr>
+        #end
+    </ul>
+</div>
+<div style="text-align: center;">
+    <nav>
+        <ul class="pagination">
+            $!{pageCode}
+        </ul>
+    </nav>
+</div>
+
+
