@@ -1,6 +1,6 @@
 package com.xiangyang.zhihu.controller;
-
-
+import com.xiangyang.zhihu.model.User;
+import com.xiangyang.zhihu.util.ReadExcel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,13 +13,48 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-
 @Controller
 public class FileController {
+    @RequestMapping(value = "excel")
+    public String excel()
+    {
+        return "excel";
+    }
+    @RequestMapping(value = "uploadexcel",method = RequestMethod.POST)
+    public void uploadexcel(@RequestParam("file") MultipartFile file
+    ,HttpServletRequest request,HttpServletResponse response)
+    {
+        if(file==null)
+        {
+            return ;
+        }
+        String name=file.getOriginalFilename();
+        long size=file.getSize();
+        if(name==null||name.equals("")||size==0)
+        {
+            return ;
+        }
+        try {
+            List<List<Object>> bankListByExcel = ReadExcel.getBankListByExcel(file.getInputStream(), name);
+            for (List<Object> objectList : bankListByExcel) {
+                for (Object o : objectList) {
+                  //  User user= (User) o;
+                  //  System.out.println(user);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 
 
     @RequestMapping("/file")

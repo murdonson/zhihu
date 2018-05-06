@@ -1,3 +1,4 @@
+/*
 package com.xiangyang.zhihu.configuration;
 
 import com.xiangyang.zhihu.interceptor.PassportInterceptor;
@@ -17,3 +18,4 @@ public class Webmvcconfiguration extends WebMvcConfigurerAdapter {
         super.addInterceptors(registry);
     }
 }
+*/

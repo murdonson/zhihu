@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+
+<body>
+
+<form action="/uploadexcel" method="post" enctype="multipart/form-data"
+      onsubmit="return check()">
+
+
+    <div style="margin: 30px;">
+        <input id="excel_file" type="file" name="file"/>
+        <input id="excel_button" type="submit" value="导入Excel"/>
+    </div>
+    <font id="importMsg" color="red"><%=importMsg%></font><input type="hidden"/>
+</form>
+
+
+</body>
+</html>

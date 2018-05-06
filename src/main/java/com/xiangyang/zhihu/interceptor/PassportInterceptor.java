@@ -1,3 +1,4 @@
+/*
 package com.xiangyang.zhihu.interceptor;
 
 import com.xiangyang.zhihu.dao.LoginTicketMapper;
@@ -62,3 +63,4 @@ public class PassportInterceptor implements HandlerInterceptor {
 
     }
 }
+*/
